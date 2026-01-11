@@ -139,6 +139,6 @@ const navbarAlternator = new NavbarAlternator({
   elements: [
     // elementSelector, [state 1 class, state 2 class]
     ["header", ["navbar-animate-to-yellow", "navbar-animate-to-white"]],
-    ["header nav ul li:nth-of-type(2)", ["button-navbar-animate-to-black", "button-navbar-animate-to-green"]],
+    ["header li.book-call button", ["button-navbar-animate-to-black", "button-navbar-animate-to-green"]],
   ],
 });

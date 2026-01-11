@@ -3,12 +3,13 @@ body {
     flex-direction: column;
     margin: 0;
     padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 
 header {
     /* height: 100px; */
-    border: 1px solid black;
+    border-bottom: 1px solid black;
     padding: 2rem;
     background-color: #ffc017;
     /* display: flex; */
@@ -25,19 +26,53 @@ header nav ul {
     margin: 0;
     padding: 0;
     display: flex;
-    gap: 1rem;
+    gap: 2rem;
     justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+}
+
+header li.book-call button {
+    background-color: black;
+    color: white;
+    border: 0;
+    padding: 1rem;
+    font-size: 1rem;
+    text-transform: uppercase;
+    border-radius: 30px;
 }
 
 main {
-    margin-top: 70px;
+    margin-top: 90px;
     flex-grow: 1;
     height: 200vh;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }
 
 main > .hero {
-    height: 100vh;
+    height: 80vh;
     background-color: palevioletred;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    font-size: 4rem;
+    padding: 2rem;
+}
+
+main > .content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 4rem;
+    background-color: paleturquoise;
+    padding: 2rem;
 
 }
+
 

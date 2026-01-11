@@ -1,5 +1,7 @@
 /* ANIMATIONS */
 
+/******* NAVBAR ANIMATION */
+
 /* navbar: from yellow to white  */
 @keyframes navbar-animation-to-white {
   0% {
@@ -21,38 +23,38 @@
   }
 }
 
+
+/******* BUTTON ANIMATION */
+
 /* button navbar: from black to green */
 @keyframes button-navbar-animation-to-green {
   0% {
-    /* background-color: black; */
+    /* color: black; */
+    background-color: black;
   }
 
   100% {
+    /* color: green; */
     background-color: green;
-    padding: 0.5rem;
-    border-radius: 10px;
-    font-size: 2rem;
-    color: white;
   }
 }
 
 /* button navbar: from green to black */
 @keyframes button-navbar-animation-to-black {
   0% {
+    /* color: green; */
     background-color: green;
-    padding: 0.5rem;
-    border-radius: 10px;
-    font-size: 2rem;
-    color: white;
   }
 
   100% {
-    /* background-color: black; */
+    /* color: black; */
+    background-color: black;
   }
 }
 
-/* use these classes to create 
-the navbar animation  */
+
+/****** ANIMATION CLASSES */
+
 
 /* navbar animation */
 .navbar-animate-to-white {
