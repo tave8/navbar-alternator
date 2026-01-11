@@ -32,26 +32,26 @@ class NavbarAlternator {
 
   // avoids triggering the scroll handler for every scroll
   // waits a small delay
-  handleScroll = () => {
+  handleScroll() {
     clearTimeout(this.lastScrollTimeout);
     this.lastScrollTimeout = setTimeout(this.handleScrollOnFinishDelay.bind(this), this.scrollDelayMs);
   };
 
-  handleScrollOnFinishDelay = () => {
+  handleScrollOnFinishDelay() {
     // navbar is before target
     if (this.isNavbarBeforeTarget()) {
-      if (this.isState2()) {
-        this.removeState2();
+      if (this.isState(2)) {
+        this.removeState(2);
         this.setState(1);
-        this.addState1();
+        this.addState(1);
       }
     } 
     // navbar is after target
     else {
-      if (this.isState1()) {
-        this.removeState1();
+      if (this.isState(1)) {
+        this.removeState(1);
         this.setState(2);
-        this.addState2();
+        this.addState(2);
       }
     }
   };
@@ -63,51 +63,44 @@ class NavbarAlternator {
   }
 
   // THE ENTIRE NAVBAR ANIMATION: STATE 1: ADD
-  addState1 = () => {
+  addState(state) {
+    // example: 
+    //   state = 1 -> classIdx = 0
+    //   state = 2 -> classIdx = 1
+    const classIdx = state-1
     this.elements.forEach((element) => {
       const [elementSelector, elementStates] = element;
-      document.querySelector(elementSelector).classList.add(elementStates[0]);
+      document.querySelector(elementSelector).classList.add(elementStates[classIdx]);
     });
   };
 
   // THE ENTIRE NAVBAR ANIMATION: STATE 1: REMOVE
-  removeState1 = () => {
+  removeState(state) {
+    // example: 
+    //   state = 1 -> classIdx = 0
+    //   state = 2 -> classIdx = 1
+    const classIdx = state-1
     this.elements.forEach((element) => {
       const [elementSelector, elementStates] = element;
-      document.querySelector(elementSelector).classList.remove(elementStates[0]);
+      document.querySelector(elementSelector).classList.remove(elementStates[classIdx]);
     });
   };
 
-  // THE ENTIRE NAVBAR ANIMATION: STATE 2: ADD
-  addState2 = () => {
-    this.elements.forEach((element) => {
-      const [elementSelector, elementStates] = element;
-      document.querySelector(elementSelector).classList.add(elementStates[1]);
-    });
-  };
-
-  // THE ENTIRE NAVBAR ANIMATION: STATE 2: REMOVE
-  removeState2 = () => {
-    this.elements.forEach((element) => {
-      const [elementSelector, elementStates] = element;
-      document.querySelector(elementSelector).classList.remove(elementStates[1]);
-    });
-  };
 
   // executed only on page load, to immediately
   // apply the appropriate animation based
   // on navbar position/scroll
-  setAndAddCorrectState = () => {
+  setAndAddCorrectState() {
     if (this.isNavbarBeforeTarget()) {
       this.setState(1);
     } else {
-      this.removeState1();
+      this.removeState(1);
       this.setState(2);
-      this.addState2();
+      this.addState(2);
     }
   };
 
-  getNavbarHeight = () => {
+  getNavbarHeight() {
     // returns the height of the navbar
     return document.querySelector(this.navbarSelector).offsetHeight
   };
@@ -122,12 +115,8 @@ class NavbarAlternator {
     return this.state;
   }
 
-  isState1() {
-    return this.getState() == 1;
-  }
-
-  isState2() {
-    return this.getState() == 2;
+  isState(state) {
+    return this.getState() == state;
   }
 }
 
