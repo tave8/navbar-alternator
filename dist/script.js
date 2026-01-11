@@ -33,10 +33,9 @@ class NavbarAlternator {
 
   handleScrollOnFinishDelay = () => {
     // TARGET REACHED
-    if (this.hasReachedTarget()) {
+    if (this.isNavbarBeforeTarget()) {
       if (this.isState2()) {
         this.removeState2();
-
         this.setState(1);
         this.addState1();
       }
@@ -52,7 +51,7 @@ class NavbarAlternator {
     }
   };
 
-  hasReachedTarget() {
+  isNavbarBeforeTarget() {
     const target = document.querySelector(this.targetSelector);
     const targetCoordinates = target.getBoundingClientRect();
     return targetCoordinates.bottom >= this.getHeaderHeight();
@@ -101,12 +100,12 @@ class NavbarAlternator {
   // apply the appropriate animation based
   // on navbar position/scroll
   setAndAddCorrectState = () => {
-    if (!this.hasReachedTarget()) {
+    if (this.isNavbarBeforeTarget()) {
+      this.setState(1);
+    } else {
       this.removeState1();
       this.setState(2);
       this.addState2();
-    } else {
-      this.setState(1);
     }
   };
 
@@ -144,6 +143,6 @@ const navbarAlternator = new NavbarAlternator({
     ["header nav ul li:nth-of-type(2)", ["button-navbar-animate-to-black", "button-navbar-animate-to-green"]],
   ],
   onTargetReached: () => {
-    console.log()
+    console.log("target reached");
   },
 });
