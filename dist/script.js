@@ -23,8 +23,9 @@ class NavbarAlternator {
   }
 
   init() {
-    this.addProperNavbarAnimation();
-    this.addEventNavbarScroll();
+    this.setAndAddCorrectState();
+
+    window.addEventListener("scroll", this.handleScroll.bind(this));
   }
 
   // ******************
@@ -39,6 +40,8 @@ class NavbarAlternator {
     if (targetReached) {
       if (this.isState2()) {
         this.removeState2();
+
+        this.setState(1);
         this.addState1();
       }
     }
@@ -46,6 +49,8 @@ class NavbarAlternator {
     else {
       if (this.isState1()) {
         this.removeState1();
+
+        this.setState(2);
         this.addState2();
       }
     }
@@ -53,34 +58,34 @@ class NavbarAlternator {
 
   // THE ENTIRE NAVBAR ANIMATION: STATE 1: ADD
   addState1 = () => {
-    // navbar
-    this.addToYellowNavbarAnimation();
-    // button
-    //   addToBlackButtonNavbarAnimation();
+    this.elements.forEach((element) => {
+      const [elementSelector, elementStates] = element;
+      document.querySelector(elementSelector).classList.add(elementStates[0]);
+    });
   };
 
   // THE ENTIRE NAVBAR ANIMATION: STATE 1: REMOVE
   removeState1 = () => {
-    // navbar
-    this.removeToYellowNavbarAnimation();
-    // button
-    //   removeToBlackButtonNavbarAnimation();
+    this.elements.forEach((element) => {
+      const [elementSelector, elementStates] = element;
+      document.querySelector(elementSelector).classList.remove(elementStates[0]);
+    });
   };
 
   // THE ENTIRE NAVBAR ANIMATION: STATE 2: ADD
   addState2 = () => {
-    // navbar
-    this.addToWhiteNavbarAnimation();
-    // button
-    //   addToGreenButtonNavbarAnimation();
+    this.elements.forEach((element) => {
+      const [elementSelector, elementStates] = element;
+      document.querySelector(elementSelector).classList.add(elementStates[1]);
+    });
   };
 
   // THE ENTIRE NAVBAR ANIMATION: STATE 2: REMOVE
   removeState2 = () => {
-    // navbar
-    this.removeToWhiteNavbarAnimation();
-    // button
-    //   removeToGreenButtonNavbarAnimation();
+    this.elements.forEach((element) => {
+      const [elementSelector, elementStates] = element;
+      document.querySelector(elementSelector).classList.remove(elementStates[1]);
+    });
   };
 
   // avoids triggering the scroll handler for every scroll
@@ -90,20 +95,10 @@ class NavbarAlternator {
     this.lastScrollTimeout = setTimeout(this.handleScrollOnFinishDelay.bind(this), this.scrollDelayMs);
   };
 
-  addEventNavbarScroll = () => {
-    // get the hero y coordinate of bottom border
-
-    // if there's a scroll, and the y coordinate of the hero's
-    // bottom border is less than the actual position of where the
-    // viewport is at right now, activate the animation
-
-    window.addEventListener("scroll", this.handleScroll.bind(this));
-  };
-
   // executed only on page load, to immediately
   // apply the appropriate animation based
   // on navbar position/scroll
-  addProperNavbarAnimation = () => {
+  setAndAddCorrectState = () => {
     const target = document.querySelector(this.targetSelector);
 
     const targetCoordinates = target.getBoundingClientRect();
@@ -111,9 +106,14 @@ class NavbarAlternator {
     const isAfterTarget = targetCoordinates.bottom < this.getHeaderHeight();
 
     if (isAfterTarget) {
+      // console.log("navbar is AFTER target")
+      this.removeState1();
+
       this.setState(2);
       this.addState2();
     } else {
+      // console.log("navbar is BEFORE target")
+
       this.setState(1);
     }
   };
@@ -122,48 +122,10 @@ class NavbarAlternator {
     return 200;
   };
 
-  // ADD ANIMATION
-
-  addToWhiteNavbarAnimation = () => {
-    const navbar = document.querySelector(this.navbarSelector);
-    navbar.classList.add("navbar-animate-to-white");
-  };
-
-  addToYellowNavbarAnimation = () => {
-    const navbar = document.querySelector(this.navbarSelector);
-    navbar.classList.add("navbar-animate-to-yellow");
-  };
-
-
-  // REMOVE ANIMATION
-
-  removeToWhiteNavbarAnimation = () => {
-    const navbar = document.querySelector(this.navbarSelector);
-    navbar.classList.remove("navbar-animate-to-white");
-  };
-
-  removeToYellowNavbarAnimation = () => {
-    const navbar = document.querySelector(this.navbarSelector);
-    navbar.classList.remove("navbar-animate-to-yellow");
-  };
-
-
-
-
-// 
+  // SETTERS & GETTERS
 
   setState(state) {
     this.state = state;
-  }
-
-  setNextState() {
-    if (this.state == 1) {
-      this.state = 2;
-    } else if (this.state == 2) {
-      this.state = 1;
-    } else {
-      throw Error("current state not recognized");
-    }
   }
 
   getState() {
@@ -181,12 +143,13 @@ class NavbarAlternator {
 
 // ****************
 
-new NavbarAlternator({
+const navbarAlternator = new NavbarAlternator({
   navbarSelector: "header",
   targetSelector: "main > .hero",
   elements: [
     // elementSelector, [state 1 class, state 2 class]
-    ["header", ["animate-to-white", "animate-to-yellow"]],
+    ["header", ["navbar-animate-to-yellow", "navbar-animate-to-white"]],
+    ["header nav ul li:nth-of-type(2)", ["button-navbar-animate-to-black", "button-navbar-animate-to-green"]],
   ],
   onTargetReached: () => {},
 });
