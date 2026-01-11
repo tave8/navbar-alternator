@@ -23,21 +23,17 @@ class NavbarAlternator {
   }
 
   init() {
+    // set the initial state
     this.setAndAddCorrectState();
-
+    // add event listener
     window.addEventListener("scroll", this.handleScroll.bind(this));
   }
 
   // ******************
 
   handleScrollOnFinishDelay = () => {
-    const hero = document.querySelector(this.targetSelector);
-    const targetCoordinates = hero.getBoundingClientRect();
-
-    const targetReached = targetCoordinates.bottom >= this.getHeaderHeight();
-
     // TARGET REACHED
-    if (targetReached) {
+    if (this.hasReachedTarget()) {
       if (this.isState2()) {
         this.removeState2();
 
@@ -55,6 +51,12 @@ class NavbarAlternator {
       }
     }
   };
+
+  hasReachedTarget() {
+    const target = document.querySelector(this.targetSelector);
+    const targetCoordinates = target.getBoundingClientRect();
+    return targetCoordinates.bottom >= this.getHeaderHeight();
+  }
 
   // THE ENTIRE NAVBAR ANIMATION: STATE 1: ADD
   addState1 = () => {
@@ -99,21 +101,11 @@ class NavbarAlternator {
   // apply the appropriate animation based
   // on navbar position/scroll
   setAndAddCorrectState = () => {
-    const target = document.querySelector(this.targetSelector);
-
-    const targetCoordinates = target.getBoundingClientRect();
-
-    const isAfterTarget = targetCoordinates.bottom < this.getHeaderHeight();
-
-    if (isAfterTarget) {
-      // console.log("navbar is AFTER target")
+    if (!this.hasReachedTarget()) {
       this.removeState1();
-
       this.setState(2);
       this.addState2();
     } else {
-      // console.log("navbar is BEFORE target")
-
       this.setState(1);
     }
   };
@@ -151,5 +143,7 @@ const navbarAlternator = new NavbarAlternator({
     ["header", ["navbar-animate-to-yellow", "navbar-animate-to-white"]],
     ["header nav ul li:nth-of-type(2)", ["button-navbar-animate-to-black", "button-navbar-animate-to-green"]],
   ],
-  onTargetReached: () => {},
+  onTargetReached: () => {
+    console.log()
+  },
 });
