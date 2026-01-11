@@ -1,0 +1,112 @@
+body {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+}
+
+
+header {
+    /* height: 100px; */
+    border: 1px solid black;
+    padding: 2rem;
+    background-color: #ffc017;
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: center; */
+    position: fixed;
+    /* allows  to stretch truly to 100% */
+    box-sizing: border-box;
+    width: 100%;
+}
+
+header nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+main {
+    margin-top: 70px;
+    flex-grow: 1;
+    height: 200vh;
+}
+
+main > .hero {
+    height: 100vh;
+    background-color: palevioletred;
+
+}
+
+
+/* ANIMATIONS */
+
+
+
+/* navbar: from yellow to white  */
+@keyframes navbar-animation-to-white {
+  0% {
+    background-color: #ffc017;
+  }
+
+  100% {
+    background-color: white;
+  }
+}
+
+@keyframes navbar-animation-to-yellow {
+  0% {
+    background-color: white;
+  }
+  
+  100% {
+    background-color: #ffc017;
+  }
+}
+
+/* button navbar: from black to green */
+@keyframes button-navbar-animation-to-green {
+  0% {
+    background-color: black;
+  }
+
+  100% {
+    background-color: green;
+  }
+}
+
+/* button navbar: from green to black */
+@keyframes button-navbar-animation-to-black {
+  0% {
+    background-color: green;
+  }
+
+  100% {
+    background-color: black;
+  }
+}
+
+/* use these classes to create 
+the navbar animation  */
+
+/* navbar animation */
+.navbar-animate-to-white {
+  animation: navbar-animation-to-white .5s ease-in forwards;
+}
+
+.navbar-animate-to-yellow {
+  animation: navbar-animation-to-yellow .5s ease-in forwards;
+}
+
+/* navbar button animation */
+
+.button-navbar-animate-to-green {
+  animation: button-navbar-animation-to-green .5s ease-in forwards;
+}
+
+.button-navbar-animate-to-black {
+  animation: button-navbar-animation-to-black .5s ease-in forwards;
+}
