@@ -1,9 +1,8 @@
 class NavbarAlternator {
-  constructor({ navbarSelector, targetSelector, elements, onTargetReached = null }) {
+  constructor({ navbarSelector, targetSelector, elements }) {
     this.navbarSelector = navbarSelector;
     this.targetSelector = targetSelector;
     this.elements = elements;
-    this.onTargetReached = onTargetReached;
 
     this.lastScrollTimeout = null;
     this.scrollDelayMs = 100;
@@ -31,20 +30,26 @@ class NavbarAlternator {
 
   // ******************
 
+  // avoids triggering the scroll handler for every scroll
+  // waits a small delay
+  handleScroll = () => {
+    clearTimeout(this.lastScrollTimeout);
+    this.lastScrollTimeout = setTimeout(this.handleScrollOnFinishDelay.bind(this), this.scrollDelayMs);
+  };
+
   handleScrollOnFinishDelay = () => {
-    // TARGET REACHED
+    // navbar is before target
     if (this.isNavbarBeforeTarget()) {
       if (this.isState2()) {
         this.removeState2();
         this.setState(1);
         this.addState1();
       }
-    }
-    // TARGET NOT REACHED
+    } 
+    // navbar is after target
     else {
       if (this.isState1()) {
         this.removeState1();
-
         this.setState(2);
         this.addState2();
       }
@@ -54,7 +59,7 @@ class NavbarAlternator {
   isNavbarBeforeTarget() {
     const target = document.querySelector(this.targetSelector);
     const targetCoordinates = target.getBoundingClientRect();
-    return targetCoordinates.bottom >= this.getHeaderHeight();
+    return targetCoordinates.bottom >= this.getNavbarHeight();
   }
 
   // THE ENTIRE NAVBAR ANIMATION: STATE 1: ADD
@@ -89,13 +94,6 @@ class NavbarAlternator {
     });
   };
 
-  // avoids triggering the scroll handler for every scroll
-  // waits a small delay
-  handleScroll = () => {
-    clearTimeout(this.lastScrollTimeout);
-    this.lastScrollTimeout = setTimeout(this.handleScrollOnFinishDelay.bind(this), this.scrollDelayMs);
-  };
-
   // executed only on page load, to immediately
   // apply the appropriate animation based
   // on navbar position/scroll
@@ -109,8 +107,9 @@ class NavbarAlternator {
     }
   };
 
-  getHeaderHeight = () => {
-    return 200;
+  getNavbarHeight = () => {
+    // returns the height of the navbar
+    return document.querySelector(this.navbarSelector).offsetHeight
   };
 
   // SETTERS & GETTERS
@@ -142,7 +141,4 @@ const navbarAlternator = new NavbarAlternator({
     ["header", ["navbar-animate-to-yellow", "navbar-animate-to-white"]],
     ["header nav ul li:nth-of-type(2)", ["button-navbar-animate-to-black", "button-navbar-animate-to-green"]],
   ],
-  onTargetReached: () => {
-    console.log("target reached");
-  },
 });
